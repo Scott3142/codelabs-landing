@@ -940,3 +940,13 @@ gulp.task('publish:prod:views', (callback) => {
   const opts = { exclude: CODELABS_NAMESPACE, dry: DRY_RUN, deleteMissing: DELETE_MISSING };
   gcs.rsync(STAGING_BUCKET, PROD_BUCKET, opts, callback);
 });
+
+var deploy = require('gulp-gh-pages');
+
+gulp.task('deploy', function () {
+  return gulp.src("./**/*")
+    .pipe(deploy({
+      remoteUrl: "https://github.com/Scott3142/codelabs-landing.git",
+      branch: "gh-pages"
+    }))
+});
