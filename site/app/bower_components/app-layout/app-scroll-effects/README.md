@@ -7,14 +7,14 @@
 app-layout provides a set of scroll effects that can be used by explicitly importing `app-scroll-effects.html`:
 
 ```html
-<link rel="import" href="{{base_url}}/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 ```
 
 The scroll effects can also be used by individually importing `app-layout/app-scroll-effects/effects/[effectName].html`.
 For example:
 
 ```html
-<link rel="import" href="{{base_url}}/bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
+<link rel="import" href="/bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 ```
 
 ### Consuming effects

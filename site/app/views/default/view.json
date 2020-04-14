@@ -6,7 +6,7 @@
   "exclude": [
     "^lang-.*"
   ],
-  "logoUrl": "{{base_url}}/images/logo.png",
+  "logoUrl": "/images/logo.png",
   "toolbarBgColor": "#37474F",
   "sort": "mainCategory",
   "pins": []

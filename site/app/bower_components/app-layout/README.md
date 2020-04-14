@@ -86,7 +86,7 @@ $ bower install PolymerElements/app-layout --save
 ## Import
 
 ```html
-<link rel="import" href="{{base_url}}/bower_components/app-layout/app-layout.html">
+<link rel="import" href="/bower_components/app-layout/app-layout.html">
 ```
 
 ## What is inside
