@@ -253,7 +253,7 @@ gulp.task('minify:css', () => {
     '!dist/codelabs/**/*',
     '!dist/elements/codelab-elements/*.css',
   ]
-  return gulp.src(srcs, { base: 'dist/codelabs-landing/' })
+  return gulp.src(srcs, { base: 'dist/' })
     .pipe(postcss(opts.postcss()))
     .pipe(gulp.dest('dist'));
 });
@@ -264,7 +264,7 @@ gulp.task('minify:html', () => {
     'dist/**/*.html',
     '!dist/codelabs/**/*',
   ]
-  return gulp.src(srcs, { base: 'dist/codelabs-landing/' })
+  return gulp.src(srcs, { base: 'dist/' })
     .pipe(postcss(opts.postcss()))
     .pipe(htmlmin(opts.htmlmin()))
     .pipe(gulp.dest('dist'));
@@ -277,7 +277,7 @@ gulp.task('minify:js', () => {
     '!dist/codelabs/**/*',
     '!dist/elements/codelab-elements/*.js',
   ]
-  return gulp.src(srcs, { base: 'dist/codelabs-landing/' })
+  return gulp.src(srcs, { base: 'dist/' })
     .pipe(uglify(opts.uglify()))
     .pipe(gulp.dest('dist'));
 });
@@ -894,7 +894,7 @@ const collectCodelabs = () => {
 
     // Iterate over each view and include codelabs for that view.
     let s = new Set();
-      for(let i = 0; i < views.length; i++) {
+    for(let i = 0; i < views.length; i++) {
       let filtered = filterCodelabs(views[i], codelabs).codelabs;
       s.add(...filtered);
     }
@@ -943,29 +943,17 @@ gulp.task('publish:prod:views', (callback) => {
 
 
 /*
-Deploy production site to Github pages
+Deploy distribution site to Github pages
 */
 // Creates a folder called dist and adds the minified website to it.
 gulp.task('create:dist', gulp.series('dist', () => {
   return gulp.src('dist')
 }));
 
-var replace = require('gulp-replace');
-gulp.task('inject-base-href', function() {
-   return gulp.src('./dist/**/*')
-              .pipe(replace('{{base_url}}', function(match) {
-                  console.log('Replace called on', match);
-                  return 'codelabs-landing'
-                    }
-               ))
-              .pipe(gulp.dest('.dist/'));
-            });
-
 // Deploys production website to gh-pages branch
 var deploy = require('gulp-gh-pages');
 gulp.task('deploy', gulp.series(
   'create:dist',
-  'inject-base-href',
   function () {
     return gulp.src("./dist/**/*")
       .pipe(deploy({
@@ -973,9 +961,4 @@ gulp.task('deploy', gulp.series(
         branch: "gh-pages"
       }))
   }
-));
-
-gulp.task('deploy:nopush', gulp.series(
-  'create:dist',
-  'inject-base-href',
 ));
