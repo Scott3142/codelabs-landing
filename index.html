@@ -95,7 +95,12 @@ Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs w
 </a>
 </paper-listbox>
 </paper-dropdown-menu>
-</div>
+<paper-dropdown-menu label="Filter by category" class="dropdown-filter" no-label-float noink no-animations>
+<paper-listbox id="categorylist" slot="dropdown-content" class="dropdown-content" on-iron-activate="onCategoryActivate" attr-for-selected="filter">
+<paper-item filter="Python">Python</paper-item>
+<paper-item filter="btec-unit4">btec-unit4</paper-item>
+</paper-listbox>
+</paper-dropdown-menu></div>
 <card-sorter id="cards" class="site-width">
 <a href="https://scott3142.uk/codelabs-landing/codelabs/sound-of-the-bees/index.html?index=..%2F..index" on-tap="navigate" class="codelab-card category-python" data-category="Python" data-title="Sound of the Bees" data-duration="44" data-updated="2020-04-14T11:15:24Z" data-tags="web" data-pin="">
 <div class="description">Sound of the Bees</div>
@@ -106,6 +111,17 @@ Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs w
 <div class="card-footer">
 <div class="category-icon python-icon"></div>
 <paper-button class="python-bg">Start</paper-button>
+</div>
+</a>
+<a href="https://scott3142.uk/codelabs-landing/codelabs/network-security/index.html?index=..%2F..index" on-tap="navigate" class="codelab-card category-btec-unit4" data-category="btec-unit4" data-title="Fundamentals of Network Security" data-duration="24" data-updated="2020-04-14T14:42:44Z" data-tags="rpi" data-pin="">
+<div class="description">Fundamentals of Network Security</div>
+<div class="card-duration">
+<span>24 min </span>
+<span>Updated Apr 14, 2020</span>
+</div>
+<div class="card-footer">
+<div class="category-icon btec-unit4-icon"></div>
+<paper-button class="btec-unit4-bg">Start</paper-button>
 </div>
 </a>
 </card-sorter>

@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-04-14T14:42:44Z",
+  "id": "network-security",
+  "duration": 24,
+  "title": "Fundamentals of Network Security",
+  "authors": "Scott Morgan",
+  "summary": "This tutorial will guide you through the Fundamentals of Network Security class delivered at Bridgend College on 2nd December 2019.",
+  "source": "1-GPomwpsSVAanw3oAfjSzd6RVGQpuE6HCnJ8_5TusW8",
+  "theme": "btec-unit4",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "btec-unit4"
+  ],
+  "tags": [
+    "rpi"
+  ],
+  "feedback": "https://github.com/Scott3142/network-security",
+  "ga": "UA-214872164-1",
+  "url": "network-security"
+}
