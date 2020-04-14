@@ -234,7 +234,7 @@
     } else {
       let script = document.createElement('script');
       script.async = true;
-      script.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
+      script.src = '{{ baseUrl }}/bower_components/webcomponentsjs/webcomponents-lite.min.js';
       document.head.appendChild(script);
     }
   }
@@ -284,3 +284,4 @@
     document.addEventListener('DOMContentLoaded', init);
   }
 })(window, document);
+v

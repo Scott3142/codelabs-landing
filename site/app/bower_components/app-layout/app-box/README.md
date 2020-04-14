@@ -36,7 +36,7 @@ Finally, app-box can have content inside. For example:
 To use the scroll effects, you must explicitly import them in addition to `app-box`:
 
 ```html
-<link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="{{baseUrl}}/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 ```
 
 #### List of effects

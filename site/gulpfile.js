@@ -60,7 +60,7 @@ const BASE_URL = args.baseUrl || 'https://scott3142.uk/codelabs-landing';
 // CODELABS_DIR is the directory where the actual codelabs exist on disk.
 // Despite being a constant, this can be overridden with the --codelabs-dir
 // flag.
-const CODELABS_DIR = args.codelabsDir || '.';
+const CODELABS_DIR = args.codelabsDir || 'codelabs';
 
 // CODELABS_ENVIRONMENT is the environment for which to build codelabs.
 const CODELABS_ENVIRONMENT = args.codelabsEnv || 'web';
@@ -230,8 +230,8 @@ gulp.task('build:vulcanize', () => {
 // build builds all the assets
 gulp.task('build', gulp.series(
   'clean',
-  'build:codelabs',
   'build:css',
+  'build:codelabs',
   'build:scss',
   'build:html',
   'build:images',
@@ -842,13 +842,19 @@ const sortCodelabs = (codelabs, view) => {
 // expression or view regular expression into the build/ folder. If no filters
 // are specified (i.e. if codelabRe and viewRe are both undefined), then this
 // function returns all codelabs in the codelabs directory.
+var ncp = require('ncp').ncp;
 const copyFilteredCodelabs = (dest) =>  {
   // No filters were specified, symlink the codelabs folder directly and save
   // processing.
   if (CODELABS_FILTER === '*' && VIEWS_FILTER === '*') {
     const source = path.join(CODELABS_DIR);
     const target = path.join(dest, CODELABS_NAMESPACE);
-    fs.ensureSymlinkSync(source, target, 'dir');
+    //fs.ensureSymlinkSync(source, target, 'dir');
+    ncp(source, target, function (err) {
+      if (err) {
+        return console.error(err);
+      }
+    });
     return
   }
 
@@ -858,7 +864,12 @@ const copyFilteredCodelabs = (dest) =>  {
     const codelab = codelabs[i];
     const source = path.join(CODELABS_DIR, codelab.id);
     const target = path.join(dest, CODELABS_NAMESPACE, codelab.id);
-    fs.ensureSymlinkSync(source, target, 'dir');
+    //fs.ensureSymlinkSync(source, target, 'dir');
+    ncp(source, target, function (err) {
+      if (err) {
+        return console.error(err);
+      }
+    });
   }
 };
 
@@ -943,21 +954,28 @@ gulp.task('publish:prod:views', (callback) => {
 
 
 /*
-Deploy distribution site to Github pages
+Deploy site to Github pages
 */
-// Creates a folder called dist and adds the minified website to it.
-gulp.task('create:dist', gulp.series('dist', () => {
-  return gulp.src('dist')
-}));
 
 // Deploys production website to gh-pages branch
-var deploy = require('gulp-gh-pages');
-gulp.task('deploy', gulp.series(
-  'create:dist',
+var deploy = require('gulp-gh-pages-gift');
+gulp.task('deploy:stage', gulp.series(
+  'build',
+  function () {
+    return gulp.src("./build/**/*")
+     .pipe(deploy({
+        remoteUrl: "git@github.com:Scott3142/codelabs-landing.git",
+        branch: "gh-pages"
+      }))
+  }
+));
+
+gulp.task('deploy:prod', gulp.series(
+  'dist',
   function () {
     return gulp.src("./dist/**/*")
-      .pipe(deploy({
-        remoteUrl: "https://github.com/Scott3142/codelabs-landing.git",
+     .pipe(deploy({
+        remoteUrl: "git@github.com:Scott3142/codelabs-landing.git",
         branch: "gh-pages"
       }))
   }
