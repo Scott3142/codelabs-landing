@@ -950,7 +950,7 @@ gulp.task('create:dist', gulp.series('dist', () => {
   return gulp.src('dist')
 }));
 
-var replace = require('gulp-repace');
+var replace = require('gulp-replace');
 gulp.task('inject-base-href', function() {
    return gulp.src('./dist/**/*')
               .pipe(replace('{{base_url}}', function(match) {
