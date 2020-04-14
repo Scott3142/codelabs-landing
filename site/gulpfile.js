@@ -943,17 +943,29 @@ gulp.task('publish:prod:views', (callback) => {
 
 
 /*
-Deploy distribution site to Github pages
+Deploy production site to Github pages
 */
 // Creates a folder called dist and adds the minified website to it.
 gulp.task('create:dist', gulp.series('dist', () => {
   return gulp.src('dist')
 }));
 
+var replace = require('gulp-repace');
+gulp.task('inject-base-href', function() {
+   return gulp.src('./dist/**/*')
+              .pipe(replace('{{base_url}}', function(match) {
+                  console.log('Replace called on', match);
+                  return 'codelabs-landing'
+                    }
+               ))
+              .pipe(gulp.dest('.dist/'));
+            });
+
 // Deploys production website to gh-pages branch
 var deploy = require('gulp-gh-pages');
 gulp.task('deploy', gulp.series(
   'create:dist',
+  'inject-base-href',
   function () {
     return gulp.src("./dist/**/*")
       .pipe(deploy({
