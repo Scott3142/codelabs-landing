@@ -60,7 +60,7 @@ const BASE_URL = args.baseUrl || 'https://scott3142.uk/codelabs-landing';
 // CODELABS_DIR is the directory where the actual codelabs exist on disk.
 // Despite being a constant, this can be overridden with the --codelabs-dir
 // flag.
-const CODELABS_DIR = args.codelabsDir || '.';
+const CODELABS_DIR = args.codelabsDir || 'codelabs-pub';
 
 // CODELABS_ENVIRONMENT is the environment for which to build codelabs.
 const CODELABS_ENVIRONMENT = args.codelabsEnv || 'web';
@@ -945,20 +945,16 @@ gulp.task('publish:prod:views', (callback) => {
 /*
 Deploy distribution site to Github pages
 */
-// Creates a folder called dist and adds the minified website to it.
-//gulp.task('create:dist', gulp.series('dist', () => {
-//  return gulp.src('dist')
-//}));
 
 // Deploys production website to gh-pages branch
-//var deploy = require('gulp-gh-pages');
-//gulp.task('deploy', gulp.series(
-//  'create:dist',
-//  function () {
-//    return gulp.src("./dist/**/*")
-//     .pipe(deploy({
-//        remoteUrl: "https://github.com/Scott3142/codelabs-landing.git",
-//        branch: "gh-pages"
-//      }))
-//  }
-//));
+var deploy = require('gulp-gh-pages-gift');
+gulp.task('deploy', gulp.series(
+  'dist',
+  function () {
+    return gulp.src("./dist/**/*")
+     .pipe(deploy({
+        remoteUrl: "https://github.com/Scott3142/codelabs-landing.git",
+        branch: "gh-pages"
+      }))
+  }
+));
