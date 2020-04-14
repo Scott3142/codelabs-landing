@@ -954,12 +954,23 @@ gulp.task('publish:prod:views', (callback) => {
 
 
 /*
-Deploy distribution site to Github pages
+Deploy site to Github pages
 */
 
 // Deploys production website to gh-pages branch
 var deploy = require('gulp-gh-pages-gift');
-gulp.task('deploy', gulp.series(
+gulp.task('deploy:stage', gulp.series(
+  'build',
+  function () {
+    return gulp.src("./build/**/*")
+     .pipe(deploy({
+        remoteUrl: "https://github.com/Scott3142/codelabs-landing.git",
+        branch: "gh-pages"
+      }))
+  }
+));
+
+gulp.task('deploy:prod', gulp.series(
   'dist',
   function () {
     return gulp.src("./dist/**/*")
