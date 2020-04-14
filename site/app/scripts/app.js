@@ -234,7 +234,7 @@
     } else {
       let script = document.createElement('script');
       script.async = true;
-      script.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
+      script.src = 'https://scott3142.uk/codelabs-landing/bower_components/webcomponentsjs/webcomponents-lite.min.js';
       document.head.appendChild(script);
     }
   }
