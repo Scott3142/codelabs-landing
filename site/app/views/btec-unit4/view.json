@@ -1,7 +1,7 @@
 {
   "title": "BTEC Programming",
   "description": "A repository of Codelabs for the programming course.",
-  "logoUrl": "{{baseUrl}}/btec-unit4/den01-logo.png",
+  "logoUrl": "den01-logo.png",
   "tags": ["btec"],
   "exclude": [
     ".*-about$",
