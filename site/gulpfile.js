@@ -964,7 +964,7 @@ gulp.task('deploy:stage', gulp.series(
   function () {
     return gulp.src("./build/**/*")
      .pipe(deploy({
-        remoteUrl: "https://github.com/Scott3142/codelabs-landing.git",
+        remoteUrl: "git@github.com:Scott3142/codelabs-landing.git",
         branch: "gh-pages"
       }))
   }
